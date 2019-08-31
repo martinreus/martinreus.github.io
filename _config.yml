@@ -8,9 +8,14 @@ favicon: "assets/images/logo.png"
 google_analytics: "UA-46278016-1"
 disqus: "demowebsite"
 mailchimp-list: "https://wowthemes.us11.list-manage.com/subscribe/post?u=8aeb20a530e124561927d3bd8&amp;id=8c3d2d214b"
-# include: ["_pages"]
-# permalink: /:title/
+include: ["_pages"]
+permalink: /:title/
 # permalink: /
+
+
+collections:
+  authors:
+    output: true
 
 # Authors
 # authors:
@@ -32,9 +37,6 @@ mailchimp-list: "https://wowthemes.us11.list-manage.com/subscribe/post?u=8aeb20a
 #     twitter: https://twitter.com/wowthemesnet
 #     description: "This is the author box. Write a short description of the author here. You are currently previewing Mediumish demo, a Jekyll template compatible with Github pages."
 
-collections:
-  authors:
-    output: true
 
 # Plugins
 plugins:

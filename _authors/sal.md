@@ -6,5 +6,6 @@ email: wowthemesnet@gmail.com
 web: https://www.wowthemes.net
 twitter: https://twitter.com/wowthemesnet
 description: "Author of Mediumish, a Bootstrap Medium styled template available for WordPress, HTML, Ghost and Jekyll. You are currently previewing Jekyll template demo."
+layout: author
 ---
 Author of Mediumish, a Bootstrap Medium styled template available for WordPress, HTML, Ghost and Jekyll. You are currently previewing Jekyll template demo.

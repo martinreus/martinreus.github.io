@@ -24,6 +24,12 @@ post_class: post-template
                 <!-- Post Title -->
                 <h1 class="posttitle">{{ page.title }}</h1>
 
+            <!-- Rating -->
+            {% if page.rating %}
+            <div class="rating mb-4 d-flex align-items-center">
+                <strong class="mr-1">Rating:</strong> {% include star_rating.html %}
+            </div>
+            {% endif %}
             </div>
 
             <!-- Adsense if enabled from _config.yml (change your pub id and slot) -->
@@ -60,23 +66,6 @@ post_class: post-template
                 {{content}}
             </div>
 
-            <!-- Rating -->
-            {% if page.rating %}
-            <div class="rating mb-4 d-flex align-items-center">
-                <strong class="mr-1">Rating:</strong> {% include star_rating.html %}
-            </div>
-            {% endif %}
-
-            <!-- Post Date -->
-            <p>
-            <small>
-                <span class="post-date"><time class="post-date" datetime="{{ page.date | date:"%Y-%m-%d" }}">{{ page.date | date_to_string }}</time></span>           
-                {% if page.last_modified_at %}
-                (Updated: <time datetime="{{ page.last_modified_at | date_to_xmlschema }}" itemprop="dateModified">{{ page.last_modified_at | date: "%b %-d, %Y" }}</time>)
-                {% endif %}
-                </small>
-            </p>
-
             <!-- Author Box -->
             {% if page.author %}
             <div class="row post-top-meta">
@@ -93,6 +82,16 @@ post_class: post-template
                 </div>
             </div>
             {% endif %}
+
+            <!-- Post Date -->
+            <p>
+            <small>
+                <span class="post-date"><time class="post-date" datetime="{{ page.date | date:"%Y-%m-%d" }}">{{ page.date | date_to_string }}</time></span>           
+                {% if page.last_modified_at %}
+                (Updated: <time datetime="{{ page.last_modified_at | date_to_xmlschema }}" itemprop="dateModified">{{ page.last_modified_at | date: "%b %-d, %Y" }}</time>)
+                {% endif %}
+                </small>
+            </p>
 
             <!-- Post Categories -->
             <div class="after-post-cats">
@@ -122,13 +121,15 @@ post_class: post-template
 
             <!-- Prev/Next -->
             <div class="row PageNavigation d-flex justify-content-between font-weight-bold">
-            {% if page.previous.url %}
-            <a class="prev d-block col-md-6" href="{{site.baseurl}}{{page.previous.url}}"> &laquo; {{page.previous.title}}</a>
-            {% endif %}
-            {% if page.next.url %}
-            <a class="next d-block col-md-6 text-lg-right" href="{{site.baseurl}}{{page.next.url}}">{{page.next.title}} &raquo; </a>
-            {% endif %}
-            <div class="clearfix"></div>
+                {% if page.previous.url %}
+                <a class="prev d-block col-6" href="{{site.baseurl}}{{page.previous.url}}"> &laquo; {{page.previous.title}}</a>
+                {% else %}
+                <span class="prev d-block col-6"></span>
+                {% endif %}
+                {% if page.next.url %}
+                <a class="next d-block col-6 text-lg-right" href="{{site.baseurl}}{{page.next.url}}">{{page.next.title}} &raquo; </a>
+                {% endif %}
+                <div class="clearfix"></div>
             </div>
             <!-- End Categories -->
 
@@ -139,7 +140,7 @@ post_class: post-template
 </div>
 <!-- End Article
 ================================================== -->
-
+<hr>
 <!-- Begin Comments
 ================================================== -->
 {% if page.comments != false %}

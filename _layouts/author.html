@@ -5,19 +5,36 @@ layout: default
 
 <section>
     <div class="section-title">
-        <h2><span>{{ page.name }}</span></h2>
+        <h2><span>
+          {% if page.avatar %}
+            <img class="author-thumb" src="{{site.baseurl}}/{{ page.avatar }}" alt="{{ author.name }}">
+          {%endif%}
+          {{ page.name }}</span></h2>
     </div>
 
     <div class="article-post">
     {{content}}
     </div>
 
+</section>
 
-    <h4>Latest posts</h4>
-    <ul>
-      {% assign filtered_posts = site.posts | where: 'author', page.short_name %}
-      {% for post in filtered_posts %}
-        <li><a href="{{ post.url }}">{{ post.title }}</a></li>
-      {% endfor %}
-    </ul>
+<section class="recent-posts">
+
+    <div class="section-title">
+
+        <h2><span>Latest posts</span></h2>
+
+    </div>
+
+    <div class="row listrecent">
+
+        {% assign filtered_posts = site.posts | where: 'author', page.short_name %}
+        {% for post in filtered_posts limit:3 %}
+
+        {% include postbox.html %}
+
+        {% endfor %}
+
+    </div>
+
 </section>

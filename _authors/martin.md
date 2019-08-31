@@ -5,7 +5,7 @@ avatar: assets/images/avatars/martin/avatar.png
 gravatar: e56154546cf4be74e393c62d1ae9f9d4
 email: notfor@distribution.com
 web: https://www.martinreus.com
-description: "I'm a software engineer helping people solve problems through code. A lot of times solving problems involves first learning how to do that! Writing down what I learn enables me to spread the knowledge - and quite honestly, makes me not forget what I learn :)"
+description: "Solving problems involves first learning how to do that! Writing down what I learn enables me to spread the knowledge - and quite honestly, makes me not forget what I learn :)"
 ---
 Hey, good to see you here! I am a software engineer who already had the opportunity to work in Brazil, Germany and Portugal (currently where I am based right now). In my more than ten years of professional experience I was able to work with and learn a lot from really amazing people!
 

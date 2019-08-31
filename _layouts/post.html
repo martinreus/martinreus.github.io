@@ -143,10 +143,10 @@ post_class: post-template
 </div>
 <!-- End Article
 ================================================== -->
-<hr>
+<!-- <hr> -->
 <!-- Begin Comments
 ================================================== -->
-{% if page.comments != false %}
+{% if page.comments != false and site.discus != nil %}
     <div class="container">
         <div id="comments" class="row justify-content-center mb-5">
             <div class="col-md-8">

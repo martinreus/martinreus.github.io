@@ -6,14 +6,18 @@ layout: default
 <section>
     <div class="section-title">
         <h2><span>
-          {% if page.avatar %}
-            <img class="author-thumb" src="{{site.baseurl}}/{{ page.avatar }}" alt="{{ author.name }}">
-          {%endif%}
           {{ page.name }}</span></h2>
     </div>
 
-    <div class="article-post">
-    {{content}}
+    <div class="author-about">
+      {% if page.avatar %}
+      <div class="author-image-ph">
+        <img src="{{site.baseurl}}/{{ page.avatar }}" alt="{{ author.name }}">
+      </div>
+      {%endif%}
+      <div class="author-content article-post">
+        {{content}}
+      </div>
     </div>
 
 </section>

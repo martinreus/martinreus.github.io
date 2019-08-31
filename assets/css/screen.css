@@ -305,7 +305,7 @@ span.post-read-more a:hover {
 }
 
 .mainheading h1.sitetitle {
-    font-family: Righteous;
+    /* font-family: Righteous; */
 }
 
 .mainheading h1.posttitle {
@@ -898,4 +898,23 @@ iframe {
 .lazyimg[data-srcset] {
     opacity: 0;
     transition: opacity .25s;
+}
+
+
+@media (max-width:991px) {
+    .author-image-ph img {
+        padding: 0 30px 30px 30px;
+    }
+}
+
+@media (min-width:992px) {
+    .author-content {
+        padding-left: 30px;
+    }
+    .author-about {
+        display: flex;
+    }
+    .author-image-ph {
+        flex: 0 0 300px;
+    }
 }

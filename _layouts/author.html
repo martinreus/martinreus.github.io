@@ -1,0 +1,44 @@
+---
+layout: default
+---
+
+
+<section>
+    <div class="section-title">
+        <h2><span>
+          {{ page.name }}</span></h2>
+    </div>
+
+    <div class="author-about">
+      {% if page.avatar %}
+      <div class="author-image-ph">
+        <img src="{{site.baseurl}}/{{ page.avatar }}" alt="{{ author.name }}">
+      </div>
+      {%endif%}
+      <div class="author-content article-post">
+        {{content}}
+      </div>
+    </div>
+
+</section>
+
+<section class="recent-posts">
+
+    <div class="section-title">
+
+        <h2><span>Latest posts</span></h2>
+
+    </div>
+
+    <div class="row listrecent">
+
+        {% assign filtered_posts = site.posts | where: 'author', page.short_name %}
+        {% for post in filtered_posts limit:3 %}
+
+        {% include postbox.html %}
+
+        {% endfor %}
+
+    </div>
+
+</section>

@@ -1,5 +1,4 @@
 ---
-layout: post
 title:  "Inception Movie"
 author: martin
 categories: [ Jekyll, tutorial ]

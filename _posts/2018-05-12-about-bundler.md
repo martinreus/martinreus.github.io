@@ -1,5 +1,4 @@
 ---
-layout: post
 title:  "About Bundler"
 author: sal
 categories: [ Jekyll ]

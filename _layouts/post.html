@@ -64,13 +64,14 @@ post_class: post-template
                 {% endif %}
                 <!-- End Toc -->
                 {{content}}
-
-                {% if page.image-credits %}
-                <div class="image-credits">
-                    Image credits: {{ page.image-credits }}
-                </div>
-                {% endif %}
             </div>
+
+            <!-- Image credits -->
+            {% if page.image-credits %}
+            <div class="image-credits">
+                {{ page.image-credits | markdownify }}
+            </div>
+            {% endif %}
 
             <!-- Author Box -->
             {% if page.author %}

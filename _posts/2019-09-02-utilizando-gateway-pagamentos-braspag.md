@@ -1,6 +1,6 @@
 ---
 layout: post
-title:  "Série: utilizando gateway de pagamentos Braspag - parte 1"
+title:  "Série: utilizando gateway de pagamentos Braspag - Introdução"
 author: martin
 categories: [ Payment Gateways ]
 image: assets/images/posts/moeda-real-low-wide.jpg
@@ -12,11 +12,21 @@ hidden: true
 
 Nessa série de posts vou compartilhar com vocês como configurar um gateway de pagamentos para um site no Brasil utilizando o [**Braspag**](https://www.braspag.com.br/), uma solução 100% tupiniquim de gateway de pagamentos. Além de poder oferecer cobrança por boletos, evita-se a taxação de IOF quando cartões de crédito Brasileiros são utilizados. Para quem vai fazer um negócio no exterior voltado para pessoas que morem e tenham cartões de crédito lá, talvez seja mais interessante uma alternativa como [Stripe](https://stripe.com), que possui taxas menores por operação.
 
-### Cadastro na API *sandbox* do Braspag
+Decidi por fazer essa série de posts pois a documentação oficial é relativamente boa mas esparsa; na minha opinião falta um passo a passo em ordem cronológica.
+
+## Cadastro na API *sandbox* do Braspag
 Antes de mais nada, vale esclarecer que *sandbox* nada mais é do que um ambiente de testes; ele funciona exatamente da mesma forma que um ambiente de produção, mas as operações executadas nele - por exemplo, transferências de dinheiro - não acarretam operações financeiras no mundo real. Então ~~cagad~~ erros na programação não vão criar prejuízos e pode-se testar a API quanto tempo quiser, sem custos.
 
-Para utilizar a API *sandbox*, acesse o [site de cadastro](https://cadastrosandbox.braspag.com.br/). **Não é necessário entrar com dados reais** - apesar de que usar um mail existente talvez não seja má idéia. Vai, pode colocar o seu telefone (99)99999-9999.
+**[TODO: improve starting from here]**
+
+Existem duas versões diferentes do cadastro. Isto por que a Braspag possui 2 tipos diferentes de integração. Uma delas é voltada para pagamentos simples e outra voltada para e-commerces do tipo *Marketplace*. 
+
+#### Cadastro *sandbox*: versão pagamentos simples
+Caso você escolha utilizar a API *sandbox* para pagamentos simples, acesse o [site de cadastro](https://cadastrosandbox.braspag.com.br/). **Não é necessário entrar com dados reais** - apesar de que usar um mail existente talvez não seja má idéia. Vai, pode colocar o seu telefone (99)99999-9999.
 
 Feito o cadastro, serão criados para você um ***MerchantId*** e um ***MerchantKey***; **guarde esses identificadores**, pois irá precisar deles mais tarde para comunicar com a API.
+
+#### Cadastro *sandbox*: para *Marketplaces*
+Utilize [esse link](https://cadastrosandbox.cieloecommerce.cielo.com.br/) para realizar cadastro na API sandbox Braspag para *Marketplaces*. Da mesma forma que no caso anterior, o telefone não precisa ser válido. Mais uma vez, lembre de guardar ambos ***MerchantId*** e ***MerchantKey***.
 
 [TO BE CONTINUED]

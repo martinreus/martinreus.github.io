@@ -16,4 +16,6 @@ Antes de mais nada, vale esclarecer que *sandbox* nada mais é do que um ambient
 
 Para utilizar a API *sandbox*, acesse o [site de cadastro](https://cadastrosandbox.braspag.com.br/). **Não é necessário entrar com dados reais** - apesar de que usar um mail existente talvez não seja má idéia. Vai, pode colocar o seu telefone (99)99999-9999.
 
-Feito o cadastro, serão criados para você um *MerchantId* e um *MerchantKey*; guarde esses identificadores pois irá precisar deles mais tarde para comunicar com a API.
+Feito o cadastro, serão criados para você um ***MerchantId*** e um ***MerchantKey***; **guarde esses identificadores**, pois irá precisar deles mais tarde para comunicar com a API.
+
+[TO BE CONTINUED]

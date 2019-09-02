@@ -918,3 +918,7 @@ iframe {
         flex: 0 0 300px;
     }
 }
+
+.image-credits {
+    padding: 0 0 2rem 0;
+}

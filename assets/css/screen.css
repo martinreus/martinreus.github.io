@@ -900,6 +900,10 @@ iframe {
     transition: opacity .25s;
 }
 
+.author-link-font {
+    font-size: 1.3rem;
+    font-weight: 700;
+}
 
 @media (max-width:991px) {
     .author-image-ph img {

@@ -1,23 +1,22 @@
-# Mediumish - Jekyll Theme
+# Martin Reus' Blog on technology
 
-[Live Demo](https://wowthemesnet.github.io/mediumish-theme-jekyll/) &nbsp; | &nbsp; [Download](https://github.com/wowthemesnet/mediumish-theme-jekyll/archive/master.zip) &nbsp; | &nbsp; [Documentation](https://bootstrapstarter.com/bootstrap-templates/template-mediumish-bootstrap-jekyll/) &nbsp; | &nbsp; [Buy me a coffee](https://www.wowthemes.net/donate/)
-
-![mediumish](assets/images/mediumish-jekyll-template.png)
-
+[Live Demo](https://martinreus.github.io/)
 
 ### Copyright
 
-Copyright (C) 2019 Sal, https://www.wowthemes.net
-
-**Mediumish for Jekyll** is designed and developed by [Sal](https://www.wowthemes.net) and it is *free* under MIT license. 
-
-<a href="https://www.wowthemes.net/donate/" target="_blank"><img src="https://www.buymeacoffee.com/assets/img/custom_images/orange_img.png" alt="Buy Me A Coffee" style="height: auto !important;width: auto !important;" ></a>
+Copyright (C) 2019 Martin, https://www.martinreus.com
 
 ### Contribute
 
-1. [Fork the repo](https://github.com/wowthemesnet/mediumish-theme-jekyll).
+1. [Fork the repo](https://github.com/martinreus/martinreus.github.io).
 2. Clone a copy of your fork on your local
-3. Create a branch off of master and give it a meaningful name (e.g. my-new-mediumish-feature).
+3. Create a branch off of master and give it a meaningful name (e.g. martinreus-github-io).
 4. Make necessary changes, commit, push and open a pull request on GitHub.
+
+### Running locally
+
+1. Install ruby using a tool like rvm
+2. run `bundle install`
+3. run `bundle exec jekyll serve` to test changes on http://localhost:4000 (further information for jekyll usages https://jekyllrb.com/docs/usage/)
 
 Thank you!

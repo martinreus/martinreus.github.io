@@ -8,6 +8,7 @@ image: assets/images/posts/moeda-real-low-wide.jpg
 image-credits: "Imagem: [Orlando Sant'Anna](https://unsplash.com/@ojsant?utm_medium=referral&utm_campaign=photographer-credit&utm_content=creditBadge)"
 # featured: true
 hidden: true
+postShowImage: true
 ---
 
 Nessa série de posts vou compartilhar com vocês como configurar um gateway de pagamentos para um site no Brasil utilizando o [**Braspag**](https://www.braspag.com.br/), uma solução 100% tupiniquim de gateway de pagamentos. Além de poder oferecer cobrança por boletos, evita-se a taxação de IOF quando cartões de crédito Brasileiros são utilizados. Para quem vai fazer um negócio no exterior voltado para pessoas que morem e tenham cartões de crédito lá, talvez seja mais interessante uma alternativa como [Stripe](https://stripe.com), que possui taxas menores por operação.

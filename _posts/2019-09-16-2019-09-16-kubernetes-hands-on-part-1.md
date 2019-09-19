@@ -5,6 +5,8 @@ category: [ DevOps ]
 author: martin
 # tags: []
 # summary: 
+image: assets/images/posts/kubernetes.png
+featured: true
 hidden: true
 ---
 As a moderately frequent user of Docker Swarm, I wanted to up my game a little bit by using Kubernetes, since it appeared to offer some additional features which were not present in Docker Swarm - Stateful Sets, for instance. So I started reading the official docs and got really overwhelmed by the amount of new concepts and features described there.

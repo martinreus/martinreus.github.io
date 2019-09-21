@@ -20,14 +20,12 @@ Kubernetes, also often written K8S, is a container orchestration engine. Think D
 
 ![K8S Diagram](/assets/images/posts/K8S-diagram.png)
 
-That's a lot of colourful boxes. And every one of these can be defined as a yaml file - except for the kubelet part, which is the K8S agent running on every node - which can then be applied onto a K8S cluster. I'll give some examples of yaml files in this article, but the [official documentation](https://kubernetes.io/docs/reference/) is very comprehensive and explains every parameter in detail. Just click on the version you will be currently using - in my case it was [V1.12](https://kubernetes.io/docs/reference/generated/kubernetes-api/v1.12/).
+That's a lot of boxes. And every one of these can be defined as a yaml file - except for the kubelet part, which is the K8S agent running on every node - which can then be applied onto a K8S cluster. I'll give some examples of yaml files in this article, but the [official documentation](https://kubernetes.io/docs/reference/) is very comprehensive and explains every parameter in detail. Just click on the version you will be currently using - in my case it was [V1.12](https://kubernetes.io/docs/reference/generated/kubernetes-api/v1.12/).
 
 #### First steps
-Before starting playing with Kubernetes, we have to install it locally. Installing a production ready Kubernetes is definitely **NOT** an easy task. That's why minikube exists; think of it as a lightweight kubernetes engine that instantiates a single node on your local computer, where you can test your containers and configurations. Please follow the [tutorial](https://kubernetes.io/docs/tasks/tools/install-minikube/) to install it locally. I'm installing it on linux; if you experience any problems, please leave me a note down below.
+Before starting playing with Kubernetes, we have to install it locally. Installing a production ready Kubernetes is definitely **NOT** an easy task. That's why minikube exists; think of it as a lightweight kubernetes engine that instantiates a single node on your local computer, where you can test your containers and configurations. Please follow the [tutorial](https://kubernetes.io/docs/tasks/tools/install-minikube/) to install it locally.
 
-After having followed the minikube installation guide, you should also have a tool called [kubectl](#kubectl), which is the command line tool for interacting with your cluster. This was one thing that got me a bit confused at the beginning; in Docker it already shipped with the Docker installation, so every command would be issued using `docker [OPTIONS]`. In Kubernetes tool has to be installed separately.
-
-Now let's see how to launch our first service.
+After having followed the minikube installation guide, you should also have a tool called [kubectl](#kubectl), which is the command line tool for interacting with your cluster. Now let's see how to launch our first application.
 
 #### Pods
 A Pod is the most basic building block for running containers in Kubernetes. It's a wrapper around a runnable container. An example of a pod can be defined in a yaml file, like so:
@@ -47,21 +45,20 @@ spec:
     image: nginxdemos/hello
 ```
 
-Issuing the command `kubectl apply -f pod.yaml` will apply this pod definition on a K8S cluster. After the container started you can check that it indeed exists by executing `kubectl get pods --all`. You should see the running container.
+Issuing the command `kubectl apply -f pod.yaml` will apply this pod definition on a K8S cluster. After the container started, you can check that it indeed exists by executing `kubectl get pods --all`. You should see the running container.
 
- The most important thing a pod yaml defines is the Docker container it will run. That's right: Kubernetes runs Docker containers per default. But it could also run containers using [RKT](https://coreos.com/rkt/docs/latest/using-rkt-with-kubernetes.html).
-
+The most important thing a pod yaml defines is the Docker container it will run. That's right: Kubernetes runs Docker containers per default. But it could also run containers using [RKT](https://coreos.com/rkt/docs/latest/using-rkt-with-kubernetes.html).
 
 When I first saw the Pod definition, I thought 
 
 > ooh, this looks like the service definition in Docker Swarm
 
- It turns out that this is not quite the case. A pod alone cannot expose a port of a container to the outside world, or even to another container inside the cluster. For this we will have to use [Services](#services). An important distinction here also is that after this container is set to run and for whatever reason crashes, Kubernetes will not respawn it on another node. For the container to be automatically recreated, we will have to use [Replica Sets](#replica-sets).
+It turns out that this is not quite the case. A pod alone cannot expose a port of a container to the outside world, or even to another container inside the cluster. For this we will have to use [Services](#services). An important distinction here also is that after this container is set to run and for whatever reason crashes, Kubernetes will not respawn it on another node. For the container to be automatically recreated, we will have to use [Replica Sets](#replica-sets).
 
 #### <a name="services"></a>Services 
 Services enable us to expose a container port out to the world or internally to other containers inside K8S, so that pods can communicate with one another. For those who have already worked with Docker Swarm, explicitly exposing a port of a service inside the cluster is not needed as it is already the default behaviour.
 
-Very simply put, a service will have a fixed ip which will point to one or more pods (more on that in [Replica Sets](#replica-sets)). For a service to know where to route connections to, it uses selectors. Looking at the pod definition yaml, you can see in the metadata that it has a labels tag - and there could be many of them - which are used in the service definition.
+Very simply put, a service will have a fixed ip which will point to one or more pods (more on that in [Replica Sets](#replica-sets)). For a service to know where to route connections to, it uses selectors. Looking at the pod definition yaml we created in the last section, you can see in the metadata that it has a labels tag - and there could be many of these labels - which are used in the service definition.
 
 Again, lets define a yaml file for a service which will connect to our pod.
 
@@ -70,11 +67,11 @@ Again, lets define a yaml file for a service which will connect to our pod.
 kind: Service
 apiVersion: v1
 metadata:
-  # can be the same, must not be, however
+  # can be the same value as above or any other thing
   name: webserver
 spec: 
   selector:
-    # this HAS to have exactly the same value of one (or more) 
+    # this NEEDS to be exactly the same value of one (or more) 
     # of the labels defined in the pod.
     app: webserver
   # defines which port(s) we are going to expose

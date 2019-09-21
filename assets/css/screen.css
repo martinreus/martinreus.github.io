@@ -926,3 +926,8 @@ iframe {
 .image-credits {
     padding: 0 0 2rem 0;
 }
+
+.draw-io-embed {
+    display: flex;
+    justify-content: center;
+}

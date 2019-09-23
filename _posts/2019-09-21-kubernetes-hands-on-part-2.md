@@ -10,11 +10,11 @@ tags: [ DevOps, Kubernetes, Microservices ]
 In a previous article about Kubernetes (check it out [here](/kubernetes-hands-on-part-1) if you haven't read it yet), I introduced some of the basic building blocks and wrote about how to deploy a very basic webserver on K8S. In this article I'll explain a little bit about service discovery in Kubernetes.
 
 ## Kubernetes Service Discovery
-Remember that from the previous article each service has its own ip address. These addresses are allocated dinamically, so it should not be a very good idea to reference it directly from another container. Like it is done in docker swarm, Kubernetes offers a DNS service, which allows you to reference another container from within a container using the name of the service instead of its ip.
+Remember that from the previous article each service had its own ip address. These addresses were allocated dinamically, so it should not be a very good idea to reference them directly from another container. Like in Docker Swarm, Kubernetes offers a DNS service which allows you to reference another container from within a container using the name of the service instead of its ip.
 
-This DNS service is normally hidden when doing a simple `kubectl get services`. This is because Kubernetes has namespaces. Namespaces allow grouping of logical groups if pods to better isolate different systems of your application. This makes a lot of sense when we think of a microservices architecture, which might contain hundreds of different services running, each one having very specific uses. Think of front-end services, like your UI, a gateway, a firewall. You can check which namespaces are currently available on Kubernetes typing `kubectl get namespaces`. We have so far been using the default namesystem.
+This DNS service also runs on K8S, but it does not show up when doing a simple `kubectl get services`. This is because Kubernetes has namespaces. Namespaces allow grouping of K8S deployed things, to better isolate different systems of your application. This makes a lot of sense when we think of a microservices architecture, which might contain hundreds of different services running, each one having very specific uses. Think of front-end services, like your UI, a gateway, a firewall. You can check which namespaces are currently available on Kubernetes typing `kubectl get namespaces`. We have so far been using the default namesystem.
 
-Returning to the example of DNS server, if we want to see the DNS service, which resolves our application names to actual IP addresses, we need to check what is running on the kube-system namespace. To do so, run `kubectl get all -n kube-system`. One of the entries that you'll find is the DNS server for Kubernetes:
+Returning to the example of DNS server, if we want to see the DNS service, which resolves our application names to actual IP addresses, we need to check what is running on the kube-system namespace. To do so, run `kubectl get all -n kube-system`. One of the entries that you'll find is the DNS service for Kubernetes:
 
 ```bash
 [...]
@@ -38,12 +38,12 @@ Use this definition to run your service discovery tests:
 kind: Pod
 apiVersion: v1
 metadata:
-  name: database
+  name: mysql-server
   labels:
-    app: database
+    app: mysql-server
 spec:
   containers:
-  - name: mysql
+  - name: mysql-server
     image: mysql:5
     env:
     # passing environment variables to the container
@@ -53,8 +53,7 @@ spec:
       value: test
 
 
---- # these "---" serve as a separator in yaml files for K8S
-
+---
 # service definition for the database so
 # that is is accessible by the mysql client pod
 kind: Service
@@ -65,11 +64,11 @@ metadata:
   name: database
 spec: 
   selector:
-    app: database
+    app: mysql-server
   ports:
   - port: 3306 # port of the running service
   # Should only be visible internally in K8S.
-  type: ClusterIp
+  type: ClusterIP
 
 ---
 # mysql client pod - we will try to access
@@ -84,3 +83,21 @@ spec:
     image: martinreus/mysql-client
 
 ```
+
+Apply this to your cluster using `kubectl apply -f service-discovery.yaml`. Ensure that you have something like this running:
+
+```bash
+NAME                            READY   STATUS    RESTARTS   AGE
+pod/mysql-client                1/1     Running   0          95s
+pod/mysql-server                1/1     Running   0          95s
+
+NAME                 TYPE        CLUSTER-IP       EXTERNAL-IP   PORT(S)        AGE
+service/database     ClusterIP   10.96.22.42      <none>        3306/TCP       5s
+```
+
+If everything went well, you can now check that you can access the database pod from the running mysql-client instance. To do so, execute a command from a running container; you are going to start a shell terminal in your mysql-client pod with `kubectl exec -it pod/mysql-client sh`. Once you are in your pod, you can now issue a connect command to the database with the password and database name that was set in the yaml definition for the mysql-server pod, so in this case `mysql -h database -uroot -ppass test`. It should be able to connect to the server pod.
+
+Another thing that is important to mention is the fact that *database* is not actually the [FQDN](https://en.wikipedia.org/wiki/Fully_qualified_domain_name) for the service. If you execute a `nslookup database` still inside your mysql-client pod, you'll see that it resolves *database* to the ip listed above (in this case 10.96.22.42) and the FQDN as *database.default.svc.cluster.local*. Notice that *default* in between the FQDN: this means that it was deployed in the default namespace. When connecting a microservice to another, it is generally a good idea to reference services using FQDN so as to avoid name clashes.
+
+## Wrapping up
+So this was it for service discovery in K8S. Thanks for reading, hope that it was of some use to you =). Stay tuned for more!

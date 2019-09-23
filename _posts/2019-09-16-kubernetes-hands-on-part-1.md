@@ -215,4 +215,4 @@ Reverting a deployment is also possible, even though it should be used as a last
 Even so, imagine a new rollout creates a catastrophic failure on your website and renders it completely useless to your customer. Until you debug your app and figure out what's going on, a rollback could pottentially give you time to solve the problem while still guaranteeing delivery of service of its older version. An example of a rollout for this article can be done executing `kubectl rollout undo deployment.apps/webserver`.
 
 ## Wrapping up
-With [pods](#pods), [services](#services), [replica sets](#replica-sets) and [deployments](#deployments), we can now create a pretty service which can be updated and rolled back. Pretty neat! But there is more to come; Kubernetes has just so many things to cover! Hope you enjoyed it, stay tuned :)
+With [pods](#pods), [services](#services), [replica sets](#replica-sets) and [deployments](#deployments), we can now create a simple service which can be updated and rolled back. Pretty neat! But there is more to come; Kubernetes has just so many things to cover! Hope you enjoyed it, stay tuned :)

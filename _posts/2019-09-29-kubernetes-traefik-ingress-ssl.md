@@ -8,4 +8,4 @@ summary:
 ---
 
 #### Protecting Traefik Dashboard
-[https://medium.com/@xavier.priour/secure-traefik-dashboard-with-https-and-password-in-docker-5b657e2aa15f]
+[Link 1](https://medium.com/@xavier.priour/secure-traefik-dashboard-with-https-and-password-in-docker-5b657e2aa15f)

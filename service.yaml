@@ -1,0 +1,20 @@
+kind: Service
+apiVersion: v1
+metadata:
+  # can be the same, must not be, however
+  name: webserver
+spec: 
+  selector:
+    # this HAS to have exactly the same value of one (or more) 
+    # of the labels defined in the pod.
+    app: webserver
+  # defines which port(s) we are going to expose
+  ports:
+    - name: http
+      port: 80 # port of the running service
+      nodePort: 30080 # outside world port. A limitation of NodePorts is that the number of the port has to be greater than 30000.
+
+  # the type of service defines to where we want to expose 
+  # type: ClusterIp # exposes the service only internally for kubernetes cluster
+  type: NodePort # exposes service port to the outside world
+  # type: LoadBallancer # exposes service using a LoadBallancer. Not supported on clusters that do not have an integrated load ballancer (such as minikube). 

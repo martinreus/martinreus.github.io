@@ -1,0 +1,35 @@
+# replica-sets.yaml
+# 
+# instead of v1 we now have apps/v1 because replica sets 
+# are not part of the core kubernetes library
+apiVersion: apps/v1
+kind: ReplicaSet
+metadata:
+  # can again be webserver because when 'kubectl get all'
+  # is used it will appear under replicaset.apps/webserver
+  name: webserver
+spec:
+  # seems redundant having a selector in a replica set where 
+  # we nest a pod definition. But I guess they wanted to keep
+  # consistency if we were to separate pod.yaml and 
+  # replica-set.yaml files 
+  selector:
+    matchLabels:
+      app: webserver
+  # define how many instances we want here
+  replicas: 3
+  # pod template below
+  template:
+  ############ pod definition copied from example above ##########
+    metadata:
+      # name not needed anymore
+      labels:
+        # still needed because this is the selector for the 
+        # service definition
+        app: webserver
+    spec:
+      containers:
+      - name: webserver
+        image: nginxdemos/hello
+  ################################################################
+

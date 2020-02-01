@@ -101,5 +101,13 @@ If everything went well, you can now check that you can access the database pod 
 
 Another thing that is important to mention is the fact that *database* is not actually the [FQDN](https://en.wikipedia.org/wiki/Fully_qualified_domain_name) for the service. If you execute a `nslookup database` still inside your mysql-client pod, you'll see that it resolves *database* to the ip listed above (in this case 10.96.22.42) and the FQDN as *database.default.svc.cluster.local*. Notice that *default* in between the FQDN: this means that it was deployed in the default namespace. When connecting a microservice to another, it is generally a good idea to reference services using FQDN so as to avoid name clashes.
 
+## Additional resources
+If you want to test all this on GCE without going bankrupt, here are some links which might help.
+
+- [Affordable Kubernetes Cluster](https://devonblog.com/containers/affordable-kubernetes-cluster/)
+- [K: TSAPFPP](https://www.doxsey.net/blog/kubernetes--the-surprisingly-affordable-platform-for-personal-projects)
+- [Creating GKE cluster with public ingress](https://charlieegan3.com/posts/2018-08-15-cheap-gke-cluster-zero-loadbalancers/)
+
+
 ## Wrapping up
 So this was it for service discovery in K8S, in a very small nutshell. Thanks for reading and stay tuned for more!

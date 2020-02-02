@@ -96,7 +96,7 @@ Node Express server listening on http://localhost:4000
 
 This was by far the part that took most time, but thankfully now that I am done with it you can reap the benefits =)
 
-First, we'll add transloco, by running
+First we'll add transloco by running
 
 ```bash
 ng add @ngneat/transloco
@@ -104,7 +104,41 @@ ng add @ngneat/transloco
 
 When asked, choose the languages you'll have on your website (comma separated) and also be sure to answer `y` when asked if working with server side rendering.
 
-Transloco adds a configuration property to both `src/environments/environment.ts` and `src/environments/environment.prod.ts`. The configuration for the production environment needs some special attention: when running the website in SSR mode, Transloco will download translation files dinamically from the URL that is set in `baseUrl` property; for local tests, I had to change mine to
+Transloco will add some translations inside `assets/i18n` folder. For a simple test, let's add a test translation. In my case, I configured Transloco to support _pt_ and _en_ languages. So I added some content in en.json
+
+```json
+{
+  "test": "this is a test"
+}
+```
+
+and pt.json
+
+```json
+{
+  "test": "isto é um teste"
+}
+```
+
+Now erase whatever you find inside app.component.ts and paste this snippet:
+
+```html
+<ng-container *transloco="let t">
+  <p>{{ t("test") }}</p>
+</ng-container>
+```
+
+A more detailed explanation about how to use transloco you will find in the [official documentation](https://netbasal.gitbook.io/transloco/translation-in-the-template/structural-directive)
+
+Now if you run the app normally using
+
+```bash
+ng serve
+```
+
+and head to http://localhost:4200, you should see the message either in english or whatever other language you have configured. If you want to check that your translations are working correctly, you can change the preferred language your browser uses to display websites. For Chrome, you can set it this way:
+
+Transloco adds a `baseURL` configuration property to both `src/environments/environment.ts` and `src/environments/environment.prod.ts`. The configuration for the production environment needs some special attention: when running the website in SSR mode, Transloco will download translation files dinamically from the URL that is set in `baseUrl` property; for local tests, I had to change mine to
 
 ```typescript
 export const environment = {
@@ -113,4 +147,4 @@ export const environment = {
 };
 ```
 
-where port is now 4000 (the address express runs on when running the app in SSR mode). Also note that this baseUrl will have to match your domain name once you deploy your app, otherwise Transloco will not be able to retrieve translations!
+where express server port is now 4000 (when running the app in SSR mode). Also **note that this baseUrl will have to match your domain name once you deploy your app**, otherwise Transloco will not be able to retrieve translations!

@@ -102,7 +102,7 @@ First we'll add transloco by running
 ng add @ngneat/transloco
 ```
 
-When asked, choose the languages you'll have on your website (comma separated) and also be sure to answer `y` when asked if working with server side rendering.
+When asked, choose the languages you'll have on your website (comma separated) and also be sure to answer `yes` when asked if working with server side rendering.
 
 Transloco will add some translations inside `assets/i18n` folder. For a simple test, let's add a test translation. In my case, I configured Transloco to support _pt_ and _en_ languages. So I added some content in en.json
 
@@ -130,13 +130,13 @@ Now erase whatever you find inside app.component.ts and paste this snippet:
 
 A more detailed explanation about how to use transloco you will find in the [official documentation](https://netbasal.gitbook.io/transloco/translation-in-the-template/structural-directive)
 
-Now if you run the app normally using
+Now if you run the app (without using SSR yet)
 
 ```bash
 ng serve
 ```
 
-and head to http://localhost:4200, you should see the message either in english or whatever other language you have configured. If you want to check that your translations are working correctly, you can change the preferred language your browser uses to display websites. For Chrome, you can set it this way:
+and head to http://localhost:4200, you will see that the message will always be presented in your preferred langauge, which is the first you listed when configuring the available languages. You can head to the file transloco-root.module.ts and check that a default language is set there. But what we actually want is to set this dinamycally depending on the language set in the user's browser configuration. For that, we will need to do some changes.
 
 Transloco adds a `baseURL` configuration property to both `src/environments/environment.ts` and `src/environments/environment.prod.ts`. The configuration for the production environment needs some special attention: when running the website in SSR mode, Transloco will download translation files dinamically from the URL that is set in `baseUrl` property; for local tests, I had to change mine to
 

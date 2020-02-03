@@ -126,7 +126,7 @@ and pt.json
 }
 ```
 
-Now erase whatever you find inside app.component.ts and paste this snippet:
+Now erase whatever you find inside app.component.html and paste this snippet:
 
 {% assign escapedCurly = '{{ t("test") }}' %}
 
@@ -144,7 +144,7 @@ Now if you run the app (without using SSR yet)
 ng serve
 ```
 
-and head over to http://localhost:4200, you will see that the message will always be presented in your preferred language, which will be the first you listed when configuring the available languages. You can head to the file transloco-root.module.ts and check that a default language is set there. But what we actually want is to set this dinamically depending on the language set in the user's browser configuration.
+and head over to http://localhost:4200, you will see that the message will always be presented in your preferred language, which will be the first you listed when configuring the available languages. If you open `transloco-root.module.ts` you will see that a default language is set there. What we actually want though is to choose it dinamically, depending on which language is set in the user's browser configuration.
 
 For that, we will need to get the browser's language configuration and use it to decide in which language to present the page. Since we are also going to do SSR, we will need to get the language from the request headers, since we don't have access to the user's browser configuration.
 
@@ -152,7 +152,7 @@ We will use Angular's dependency injection to properly fetch the preferred user'
 
 ##### Fetching Language from browser config
 
-Create a file called `locale-lang-config.ts` inside `app/src`. We are going to use this file to list all our supported locales and languages, which we will also reference from `transloco-root.module.ts`.
+Create a file called `locale-lang-config.ts` inside `src/app`. We are going to use this file to list all our supported locales and languages, which we will also reference from `transloco-root.module.ts`.
 
 ```typescript
 // this configuration will be injectable by app.component.ts
@@ -245,16 +245,16 @@ Just as an experiment, let's try to run this using Server-side Rendering.
 npm run build:ssr && npm run serve:ssr
 ```
 
-If we now head to http://localhost:4000, we get an internal server error. Looking at the logs, we will see that we get
+If we now head over to http://localhost:4000, we get an internal server error. Looking at the logs, we will see that we get
 
 ```cmd
 Node Express server listening on http://localhost:4000
 ERROR Error: Fetching locale failed. Are you really in a browser??
 ```
 
-This happens because browserLocaleFactory is being used to provide the LocaleConfig. This won't work because we actually need to provide a serverLocalFactory for the SSR part. We will also need to change a bit the way we provide these factories.
+This happens because browserLocaleFactory is being used to provide the LocaleConfig. This won't work because we need to provide a serverLocalFactory for the SSR part. We will also need to change a bit the way we provide these factories.
 
-So first, let's add a new function `serverLocalFactory` under our `broserLocaleFactory` which was defined in `locale-lang-config.ts`:
+Let's add a new function called `serverLocalFactory` to our `locale-lang-config.ts` file:
 
 ```typescript
 [...]
@@ -281,7 +281,7 @@ export const serverLocaleFactory: (locale?: string) => () => LocaleConfig = (req
 };
 ```
 
-This new factory will have to be provided in the express server file - `/server.ts` - created for us when we added support for SSR. The reason to add it in this file is that we will be able to extract the language from the request headers sent by the user's browser. Find this code block:
+This new factory will have to be provided in the `/server.ts` express server file - found in the root folder of our project - which was created for us when we added support for SSR. The reason to add it in this file is that we will be able to extract the language from the request headers sent by the user's browser. Find this code block:
 
 ```typescript
 [...]
@@ -292,7 +292,7 @@ This new factory will have to be provided in the express server file - `/server.
 [...]
 ```
 
-and substitue it by adding the `serverLocaleFactory`, like so:
+and substitue it by adding the `serverLocaleFactory` as a provider for `LocaleConfig`, like so:
 
 ```typescript
   [...]
@@ -309,9 +309,9 @@ and substitue it by adding the `serverLocaleFactory`, like so:
   [...]
 ```
 
-This still won't do the trick, since now when we try to access the website using SSR, we would have 2 distinct providers for `LocaleConfig`, because AppModule also already defines a provider for `LocaleConfig` - look at `AppServerModule`: it references `AppModule`.
+This still won't do the trick. When we try to access the website using SSR, we will now have 2 distinct providers for `LocaleConfig` since `AppModule` also already defines a provider for `LocaleConfig` - look at `AppServerModule`: it references `AppModule`.
 
-So the last step is to separate client and server modules so that each declares a single locale factory. To do so, create a `app.client.module.ts` inside `src/app/` with the following content:
+So the last step is to separate client and server modules so that each declares a single locale factory. To do so, create an `app.client.module.ts` under `src/app` with the following content:
 
 ```typescript
 import { NgModule } from "@angular/core";
@@ -343,7 +343,7 @@ document.addEventListener('DOMContentLoaded', () => {
 });
 ```
 
-The last part is to remove the `browserLocaleFactory` from our `AppModule`. It should look like this:
+We may now remove the `browserLocaleFactory` from our `AppModule`. It should look like this:
 
 ```typescript
 @NgModule({
@@ -359,7 +359,7 @@ The last part is to remove the `browserLocaleFactory` from our `AppModule`. It s
 export class AppModule {}
 ```
 
-As a last step, we need to change `src/environments/environment.prod.ts`. When we added Transloco, the `ng add` command will a `baseURL` configuration property to both `src/environments/environment.ts` and `src/environments/environment.prod.ts`. The configuration for the production environment needs some special attention: when running the website in SSR mode, Transloco will download translation files dinamically from the URL that is set in `baseUrl` property; for local tests, I had to change mine to
+As a last step, we need to change `src/environments/environment.prod.ts`. When we added Transloco, the `ng add` included a `baseURL` configuration property to both `src/environments/environment.ts` and `src/environments/environment.prod.ts`. The configuration for the production environment needs some special attention: when running the website in SSR mode, Transloco will download translation files dinamically from the URL that is set in `baseUrl` property; for local tests, I had to change mine to
 
 ```typescript
 export const environment = {
@@ -370,4 +370,6 @@ export const environment = {
 
 where express server port is now 4000 (when running the app in SSR mode). Also **note that this baseUrl will have to match your domain name once you deploy your app**, otherwise Transloco will not be able to retrieve translations!
 
-FINALLY! After much sweat and tears and if everything went well, you can start the server with `npm run build:ssr && npm run serve:ssr` and test that all works by navigating to http://localhost:4000. The page should render instantly with the correct language configuration.
+FINALLY! After much sweat and tears, and if everything went well, you can start the server with `npm run build:ssr && npm run serve:ssr` and test that all works by navigating to http://localhost:4000. The page should render instantly with the correct language configuration.
+
+## Adding Angular Material

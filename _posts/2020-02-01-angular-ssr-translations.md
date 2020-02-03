@@ -588,6 +588,8 @@ And in the template, display the error messages by adding a mat-error right unde
 
 Lets add translations for `required`, `minlength` and `maxlength`, which are the keys of `ValidationErrors` we might get when we have these errors present in our form to pt.json and en.json.
 
+{% assign requiredLength = '{{ requiredLength }}' %}
+
 ```json
   [...]
   "required": "Campo mandatório",

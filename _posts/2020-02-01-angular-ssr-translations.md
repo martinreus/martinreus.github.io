@@ -27,7 +27,7 @@ So let's build it!
 
 This is a very large post :)
 
-If you just want a working example of these integrations, head over to the [git repository](http://github.com/martinreus/ssr-translate)
+If you just want a working example of these integrations, head over to the [git repository](https://github.com/martinreus/ssr-translate)
 
 ## Initial setup
 
@@ -45,7 +45,7 @@ cd ssr-translate
 
 Angular CLI will ask if you want to enable routing (to which I answered yes) and what kind of stylesheet you want to use (I chose SCSS).
 
-### Enable Server-side Rendering
+## Enable Server-side Rendering
 
 Enable server-side rendering by adding angular universal (be sure to install the @next version, otherwise you might run into errors)
 
@@ -95,10 +95,10 @@ chunk    {0} main.js (main) 5.81 MiB [entry] [rendered]
 > ssr-translate@0.0.0 serve:ssr /home/martin/how-tos/ssr-translate
 > node dist/ssr-translate/server/main.js
 
-Node Express server listening on http://localhost:4000
+Node Express server listening on [http://localhost:4000](http://localhost:4000)
 ```
 
-### Adding Transloco
+## Add Transloco
 
 This was by far the part that took most time, but thankfully now that I am done with it you can reap the benefits =)
 
@@ -144,7 +144,7 @@ Now if you run the app (without using SSR yet)
 ng serve
 ```
 
-and head over to http://localhost:4200, you will see that the message will always be presented in your preferred language, which will be the first you listed when configuring the available languages. If you open `transloco-root.module.ts` you will see that a default language is set there. What we actually want though is to choose it dinamically, depending on which language is set in the user's browser configuration.
+and head over to [http://localhost:4200](http://localhost:4200), you will see that the message will always be presented in your preferred language, which will be the first you listed when configuring the available languages. If you open `transloco-root.module.ts` you will see that a default language is set there. What we actually want though is to choose it dinamically, depending on which language is set in the user's browser configuration.
 
 For that, we will need to get the browser's language configuration and use it to decide in which language to present the page. Since we are also going to do SSR, we will need to get the language from the request headers, since we don't have access to the user's browser configuration.
 
@@ -233,7 +233,7 @@ Finally, to have the app presented using the browser language config, add this c
   }
 ```
 
-If everything went according to plan, when opening the page at http://localhost:4200 you should see the page in the language configured in your browser. If you want to test changing the language in firefox:
+If everything went according to plan, when opening the page at [http://localhost:4200](http://localhost:4200) you should see the page in the language configured in your browser. If you want to test changing the language in firefox:
 
 ![](/assets/images/posts/angular-ssr-transloco/change-lang-sm.gif)
 
@@ -245,14 +245,14 @@ Just as an experiment, let's try to run this using Server-side Rendering.
 npm run build:ssr && npm run serve:ssr
 ```
 
-If we now head over to http://localhost:4000, we get an internal server error. Looking at the logs, we will see that we get
+If we now head over to [http://localhost:4000](http://localhost:4000), we get an internal server error. Looking at the logs, we will see that we get
 
 ```cmd
-Node Express server listening on http://localhost:4000
+Node Express server listening on [http://localhost:4000](http://localhost:4000)
 ERROR Error: Fetching locale failed. Are you really in a browser??
 ```
 
-This happens because browserLocaleFactory is being used to provide the LocaleConfig. This won't work because we need to provide a serverLocalFactory for the SSR part. We will also need to change a bit the way we provide these factories.
+This happens because browserLocaleFactory is being used to provide the `LocaleConfig`. This won't work because we need to provide a serverLocalFactory for the SSR part. We will also need to change a bit the way we provide these factories.
 
 Let's add a new function called `serverLocalFactory` to our `locale-lang-config.ts` file:
 
@@ -292,7 +292,7 @@ This new factory will have to be provided in the `/server.ts` express server fil
 [...]
 ```
 
-and substitue it by adding the `serverLocaleFactory` as a provider for `LocaleConfig`, like so:
+and substitute it by adding the `serverLocaleFactory` as a provider for `LocaleConfig`, like so:
 
 ```typescript
   [...]
@@ -311,7 +311,7 @@ and substitue it by adding the `serverLocaleFactory` as a provider for `LocaleCo
 
 This still won't do the trick. When we try to access the website using SSR, we will now have 2 distinct providers for `LocaleConfig` since `AppModule` also already defines a provider for `LocaleConfig` - look at `AppServerModule`: it references `AppModule`.
 
-So the last step is to separate client and server modules so that each declares a single locale factory. To do so, create an `app.client.module.ts` under `src/app` with the following content:
+So the last step is to separate client and server modules so that each declares a single locale factory. To do so, create an `app.client.module.ts` file under `src/app` with the following content:
 
 ```typescript
 import { NgModule } from "@angular/core";
@@ -370,6 +370,248 @@ export const environment = {
 
 where express server port is now 4000 (when running the app in SSR mode). Also **note that this baseUrl will have to match your domain name once you deploy your app**, otherwise Transloco will not be able to retrieve translations!
 
-FINALLY! After much sweat and tears, and if everything went well, you can start the server with `npm run build:ssr && npm run serve:ssr` and test that all works by navigating to http://localhost:4000. The page should render instantly with the correct language configuration.
+FINALLY! After much sweat and tears, and if everything went well, you can start the server with `npm run build:ssr && npm run serve:ssr` and test that all works by navigating to [http://localhost:4000](http://localhost:4000). The page should render instantly with the correct language configuration.
 
-## Adding Angular Material
+## Add Angular Material
+
+Add Angular material by running
+
+```bash
+ng add @angular/material@next
+```
+
+I've also used `next` version here, just to be consistent with versioning. Progress through all questions with your choices (I also chose to have global fonts enabled, since this applies roboto font to the whole page). If you don't want roboto applied to the body of your page, just stick with the defaults.
+
+Now let's add a new reactive form in our app.component.html, with some translated fields:
+
+{% assign buttonTranslate = '{{ t("app.form.submit") }}' %}
+
+```html
+<form class="example-form" [formGroup]="form" *transloco="let t">
+  <mat-form-field class="full-width">
+    <textarea
+      matInput
+      [placeholder]="t('app.form.address')"
+      formControlName="address"
+    ></textarea>
+  </mat-form-field>
+
+  <table class="full-width" cellspacing="0">
+    <tr>
+      <td>
+        <mat-form-field class="full-width">
+          <input
+            matInput
+            [placeholder]="t('app.form.city')"
+            formControlName="city"
+          />
+        </mat-form-field>
+      </td>
+      <td>
+        <mat-form-field class="full-width">
+          <input
+            matInput
+            [placeholder]="t('app.form.state')"
+            formControlName="state"
+          />
+        </mat-form-field>
+      </td>
+    </tr>
+  </table>
+
+  <button type="submit" mat-button>{{ buttonTranslate }}</button>
+</form>
+```
+
+For this to work, we need to add some imports to our `AppModule`,
+
+```typescript
+  imports: [
+    [...]
+    ReactiveFormsModule,
+    MatFormFieldModule,
+    MatButtonModule,
+    MatInputModule,
+  ]
+```
+
+and we also create the translations for pt and en
+
+```json
+{
+  "app": {
+    "form": {
+      "address": "Endereço",
+      "city": "Cidade",
+      "state": "Estado",
+      "submit": "Enviar"
+    }
+  }
+}
+```
+
+```json
+{
+  "app": {
+    "form": {
+      "address": "Address",
+      "city": "City",
+      "state": "State",
+      "submit": "Submit"
+    }
+  }
+}
+```
+
+We must not forget to also initialize our FormGroup in app.component.ts:
+
+```typescript
+export class AppComponent implements OnInit {
+  form: FormGroup;
+
+  constructor(
+    transloco: TranslocoService,
+    localeConf: LocaleConfig,
+    private fb: FormBuilder
+  ) {
+    transloco.setActiveLang(localeConf.language);
+  }
+  ngOnInit(): void {
+    this.form = this.fb.group({
+      address: [""],
+      city: [""],
+      state: [""]
+    });
+  }
+}
+```
+
+And that's it, we now have Material fields with translated names.
+
+## Translate form field validation errors with Transloco
+
+Now to the final piece of the puzzle: translating field validation errors. To make this work, we will need a pipe operator, to transform the `ValidationErrors` that are returned from each validator into something that can be used as input for Transloco. Create a new pipe operator by using angular cli:
+
+```bash
+ng g p pipes/translate-error --module app
+```
+
+with the following content
+
+```typescript
+import { Pipe, PipeTransform } from "@angular/core";
+import { ValidationErrors } from "@angular/forms";
+
+@Pipe({
+  name: "i18nErr"
+})
+export class TranslateErrorPipe implements PipeTransform {
+  transform(
+    errors: ValidationErrors | null,
+    i18nFunc: (i18nKey: string, obj?: { [key: string]: any }) => string
+  ): string {
+    if (!errors) {
+      return "";
+    }
+    const errorKeys = Object.keys(errors);
+    if (errorKeys.length === 0) {
+      return "";
+    }
+    const errorKey = errorKeys[0];
+    const errorDetails = errors[errorKey];
+
+    if (typeof errorDetails === "object") {
+      return i18nFunc(errorKey, errorDetails);
+    }
+    return i18nFunc(errorKey);
+  }
+}
+```
+
+Our new pipe will take two arguments; the first argument takes all `ValidationErrors` a field will output when in error. If we look at the definition of Angular's ValidationError interface:
+
+```typescript
+export interface ValidationError {
+  [key: string]: any;
+}
+```
+
+We see that there might be multiple errors, represented as keys in this interface. The `any` type on the right side might contain an arbitrary object detailing the error. For instance, if we define a `Validators.maxLength(3)` for a field and the user inputs more than 3 chars, the field will have following error:
+
+```json
+{
+  "maxlength": {
+    "requiredLength": 3,
+    "actualLength": 6
+  }
+}
+```
+
+The second pipe argument is Transloco's `translate` function (named `i18nFunc` in this pipe). This function accepts a translation key and an optional additional object used for interpolating the string we are translating; we can use the additional information we receive in the error object to complete our translation [with additional information](https://netbasal.gitbook.io/transloco/translation-in-the-template/structural-directive).
+
+Ultimately, what our pipe will do is to find the first error (if any) from the `ValidationErrors` argument and extract the first key and the value it finds for that key. The key will be passed as an argument to `i18nFunc` function, and if there is also a value object for the error key, it will be passed as the optional argument for the `i18nFunc` function
+
+This sounds confusing right now but it'll make sense in a minute when we add translations for our validations.
+
+Let's add some validations in app.component.ts then:
+
+```typescript
+  ngOnInit(): void {
+    this.form = this.fb.group({
+      address: [''],
+      city: ['', [Validators.required]],
+      state: ['', [Validators.required, Validators.maxLength(20), Validators.minLength(3)]]
+    });
+  }
+```
+
+And in the template, display the error messages by adding a mat-error right under each input tag
+{% assign errorPipe = '{{ errors | i18nErr: t }}' %}
+
+```html
+    [...]
+        <mat-form-field class="full-width">
+          <input matInput [placeholder]="t('app.form.city')" formControlName="city" />
+          <mat-error *ngIf="form.controls.city.errors as errors">{{ errorPipe }}</mat-error>
+        </mat-form-field>
+      </td>
+      <td>
+        <mat-form-field class="full-width">
+          <input matInput [placeholder]="t('app.form.state')" formControlName="state" />
+          <mat-error *ngIf="form.controls.state.errors as errors">{{ errorPipe }}</mat-error>
+        </mat-form-field>
+      </td>
+    </tr>
+  </table>
+  [...]
+```
+
+Lets add translations for `required`, `minlength` and `maxlength`, which are the keys of `ValidationErrors` we might get when we have these errors present in our form to pt.json and en.json.
+
+```json
+  [...]
+  "required": "Campo mandatŕio",
+  "minlength": "Deve ter no mínimo {{ requiredLength }} caracteres",
+  "maxlength": "Deve ter no máximo {{ requiredLength }} caracteres"
+```
+
+```json
+  [...]
+  "required": "Value required",
+  "minlength": "Must have at least {{ requiredLength }} characters",
+  "maxlength": "Cannot have more than {{ requiredLength }} characters"
+```
+
+In the translation files, you can see we are using string interpolation for the `requiredLength`, which is part of `ValidationError` details when we have a `minlength` or `maxlength` validation error.
+
+And that's it, we are finally done with this huge tutorial!
+
+## Wrapping up
+
+Hopefully this tutorial didn't melt your brain. Having translations and SSR configured properly right at the beginning of a new project is extremely beneficial down the road since having to change all this later can be very frustrating and time consuming!
+
+If you want to have a look at the fully working example, please check it out at [https://github.com/martinreus/ssr-translate](https://github.com/martinreus/ssr-translate).
+
+If you found an issue or typos in this tutorial, please kindly let me know by opening an issue here -> [https://github.com/martinreus/martinreus.github.io/issues](https://github.com/martinreus/martinreus.github.io/issues)
+
+Thanks for reading and see you in the next one! Cheers!

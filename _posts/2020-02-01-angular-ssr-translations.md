@@ -590,7 +590,7 @@ Lets add translations for `required`, `minlength` and `maxlength`, which are the
 
 ```json
   [...]
-  "required": "Campo mandatŕio",
+  "required": "Campo mandatório",
   "minlength": "Deve ter no mínimo {{ requiredLength }} caracteres",
   "maxlength": "Deve ter no máximo {{ requiredLength }} caracteres"
 ```

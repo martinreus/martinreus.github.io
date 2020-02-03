@@ -25,7 +25,7 @@ So let's build it!
 
 ## Initial setup
 
-#### Creating a new project
+### Creating a new project
 
 While Angular 9 is still not yet released, we can use its RC version (currently at 9.0.0-rc.12). To do this more easily, I've installed @angular/cli@next (which installs the current RC version) to generate a new project called `ssr-translate`.
 
@@ -39,7 +39,7 @@ cd ssr-translate
 
 Angular CLI will ask if you want to enable routing (to which I answered yes) and what kind of stylesheet you want to use (I chose SCSS).
 
-#### Enable Server-side Rendering
+### Enable Server-side Rendering
 
 Enable server-side rendering by adding angular universal (be sure to install the @next version, otherwise you might run into errors)
 
@@ -92,7 +92,7 @@ chunk    {0} main.js (main) 5.81 MiB [entry] [rendered]
 Node Express server listening on http://localhost:4000
 ```
 
-#### Add Transloco
+### Adding Transloco
 
 This was by far the part that took most time, but thankfully now that I am done with it you can reap the benefits =)
 
@@ -122,13 +122,15 @@ and pt.json
 
 Now erase whatever you find inside app.component.ts and paste this snippet:
 
+{% assign escapedCurly = '{{ t("test") }}' %}
+
 ```html
 <ng-container *transloco="let t">
-  <p>{{ t("test") }}</p>
+  <p>{{ escapedCurly }}</p>
 </ng-container>
 ```
 
-A more detailed explanation about how to use transloco you will find in the [official documentation](https://netbasal.gitbook.io/transloco/translation-in-the-template/structural-directive)
+You will find a more detailed explanation about how to use transloco in the [official documentation](https://netbasal.gitbook.io/transloco/translation-in-the-template/structural-directive).
 
 Now if you run the app (without using SSR yet)
 
@@ -136,7 +138,106 @@ Now if you run the app (without using SSR yet)
 ng serve
 ```
 
-and head to http://localhost:4200, you will see that the message will always be presented in your preferred langauge, which is the first you listed when configuring the available languages. You can head to the file transloco-root.module.ts and check that a default language is set there. But what we actually want is to set this dinamycally depending on the language set in the user's browser configuration. For that, we will need to do some changes.
+and head to http://localhost:4200, you will see that the message will always be presented in your preferred language, which will be the first you listed when configuring the available languages. You can head to the file transloco-root.module.ts and check that a default language is set there. But what we actually want is to set this dinamycally depending on the language set in the user's browser configuration.
+
+For that, we will need to get the browser's language configuration and use it to decide in which language to present the page. Since we are also going to do SSR, we will need to get the language from the request headers, since we don't have access to the user's browser configuration.
+
+We will use Angular's dependency injection to properly fetch the preferred user's language, for the browser part and for the server side.
+
+##### Fetching Language from browser config
+
+Create a file called `locale-lang-config.ts` inside `app/src`. We are going to use this file to list all our supported locales and languages, which we will also reference from `transloco-root.module.ts`.
+
+```typescript
+// this configuration will be injectable by app.component.ts
+export class LocaleConfig {
+  constructor(public language: string, public locale: string) {}
+}
+
+// some locale and language configuration for all the available languages our website supports
+export const DEFAULT_LANG = "pt";
+export const DEFAULT_LOCALE = "pt-BR";
+export const SUPPORTED_LANGUAGES = [
+  { language: "pt", locales: ["pt-BR", "pt-PT"] },
+  { language: "en", locales: ["en-US", "en-GB"] }
+];
+
+// This factory is what will create the LocaleConfig to be used when
+// the app is running in our browser (so not in our Server-side rendered page)
+// Notice the reference to window object, which is only available when
+// we are running in a browser
+export const browserLocaleFactory: () => LocaleConfig = () => {
+  if (
+    typeof window === "undefined" ||
+    typeof window.navigator === "undefined"
+  ) {
+    throw new Error("Fetching locale failed. Are you really in a browser??");
+  }
+  const wn = window.navigator as any;
+  let locale = wn.languages ? `${wn.languages[0]}` : DEFAULT_LOCALE;
+  locale = locale || wn.language || wn.browserLanguage || wn.userLanguage;
+  const language = locale.split("-")[0];
+
+  return new LocaleConfig(language, locale);
+};
+```
+
+In `transloco-root.module.ts`, change `availableLangs` and `defaultLangs` values to point to the ones created in `locale-lang-config.ts`, like so:
+
+```typescript
+[...]
+@NgModule({
+  exports: [TranslocoModule],
+  providers: [
+    {
+      provide: TRANSLOCO_CONFIG,
+      useValue: translocoConfig({
+        availableLangs: SUPPORTED_LANGUAGES.map(lang => lang.language),
+        defaultLang: DEFAULT_LANG,
+        reRenderOnLangChange: true,
+        prodMode: environment.production
+      })
+    },
+    { provide: TRANSLOCO_LOADER, useClass: TranslocoHttpLoader }
+  ]
+})
+export class TranslocoRootModule {}
+```
+
+Now in you `app.module.ts` file, add a provider configuration, which will provide our `LocaleConfig` using the `browserLocaleFactory` we defined in `locale-lang-config.ts`:
+
+```typescript
+  [...]
+  bootstrap: [AppComponent],
+  providers: [
+    {
+      provide: LocaleConfig,
+      useFactory: browserLocaleFactory
+    }
+  ]
+})
+export class AppModule {}
+```
+
+Finally, to have the app presented using the browser language config, add this constructor to `app.component.ts`:
+
+```typescript
+  constructor(transloco: TranslocoService, localeConf: LocaleConfig) {
+    transloco.setActiveLang(localeConf.language);
+  }
+```
+
+If everything went according to plan, when opening the page at http://localhost:4200 you should see the page in the language configured in your browser. If you want to test changing the language in firefox:
+
+![](/assets/images/posts/angular-ssr-transloco/change-lang-sm.gif)
+
+##### Fetching Language from request headers (SSR part)
+
+Just as an experiment, let's try to run this using Server-side Rendering.
+
+```bash
+npm run build:ssr && npm run serve:ssr
+```
 
 Transloco adds a `baseURL` configuration property to both `src/environments/environment.ts` and `src/environments/environment.prod.ts`. The configuration for the production environment needs some special attention: when running the website in SSR mode, Transloco will download translation files dinamically from the URL that is set in `baseUrl` property; for local tests, I had to change mine to
 

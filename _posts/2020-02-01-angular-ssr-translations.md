@@ -95,7 +95,7 @@ chunk    {0} main.js (main) 5.81 MiB [entry] [rendered]
 > ssr-translate@0.0.0 serve:ssr /home/martin/how-tos/ssr-translate
 > node dist/ssr-translate/server/main.js
 
-Node Express server listening on [http://localhost:4000](http://localhost:4000)
+Node Express server listening on http://localhost:4000
 ```
 
 If you go to [http://localhost:4000](http://localhost:4000), you'll see that the page loads instantly.
@@ -248,7 +248,7 @@ npm run build:ssr && npm run serve:ssr
 If we go to [http://localhost:4000](http://localhost:4000), we will get an internal server error. Looking at the logs, we will see that we get the exception we defined in our browserLocaleFactory:
 
 ```cmd
-Node Express server listening on [http://localhost:4000](http://localhost:4000)
+Node Express server listening on http://localhost:4000
 ERROR Error: Fetching locale failed. Are you really in a browser??
 ```
 

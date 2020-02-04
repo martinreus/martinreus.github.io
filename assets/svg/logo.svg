@@ -15,7 +15,10 @@
    version="1.1"
    id="svg8"
    inkscape:version="0.92.3 (2405546, 2018-03-11)"
-   sodipodi:docname="logo.svg">
+   sodipodi:docname="logo.svg"
+   inkscape:export-filename="/media/martin/DADOS/Programacao/projetos/martinreus.github.io/assets/images/logo-m.png"
+   inkscape:export-xdpi="51.291939"
+   inkscape:export-ydpi="51.291939">
   <defs
      id="defs2" />
   <sodipodi:namedview
@@ -26,7 +29,7 @@
      inkscape:pageopacity="0.0"
      inkscape:pageshadow="2"
      inkscape:zoom="8"
-     inkscape:cx="3.7951712"
+     inkscape:cx="2.3576712"
      inkscape:cy="26.395388"
      inkscape:document-units="mm"
      inkscape:current-layer="layer2"
@@ -53,7 +56,8 @@
      inkscape:groupmode="layer"
      id="layer2"
      inkscape:label="Layer 2"
-     transform="translate(-33.072915,-5.2886195)">
+     transform="translate(-33.072915,-5.2886195)"
+     style="opacity:1">
     <path
        style="display:inline;fill:#006876;fill-opacity:1;stroke:none;stroke-width:0.26458332px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1"
        d="m 36.768861,5.2924524 6.446537,9.8943766 -3.853849,0.0057 -6.288633,-9.9001196 z"

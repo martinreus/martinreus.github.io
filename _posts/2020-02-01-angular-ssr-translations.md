@@ -10,30 +10,28 @@ featured: true
 hidden: true
 ---
 
-Angular 9 is almost out! Ivy render engine will now be set as default and we can expect improved i18n and l10n. To translate your website in different languages using the provided I18N capabilities though, you will have to compile your source code in every language your website is going to be presented to the user, and have every different version running behind a proxy that will route your user to the correct version. This might not fit your development workflow and could also add some additional complexity when deploying your website. On top of that, changing the language in runtime is not yet possible, although they are already working on it - [see the issue here](https://github.com/angular/angular/issues/16477).
+Angular 9 is almost out! With the new version, Ivy rendering engine will now be the default and we can also expect improved i18n and l10n. In order to translate your website in different languages using Angular's I18N though, you will have to compile your source code in every language your website is going to be presented to the user. You will then need to have every different version running behind a proxy that will route your user to the correct version. This might not fit your development workflow and could also add some additional complexity when deploying your website. On top of that, changing the language in runtime is not yet possible, although Google is already working on it - [see the issue here](https://github.com/angular/angular/issues/16477).
 
-There are some alternatives to Angular's provided I18N library, like [ngx-translation](https://github.com/ngx-translate/core). However, the owner of this repository is shifting his efforts (see [here](https://github.com/ngx-translate/core/issues/783)) towards helping to improve the official Angular I18N library, as well as being part of the team that is developing a pretty awesome translation library (in my humble opinion) called [Transloco](https://github.com/ngneat/transloco).
+There are some very good alternatives to Angular's provided I18N library, like the ubiquous [ngx-translation](https://github.com/ngx-translate/core). However, the owner of this repository is shifting his efforts (see [here](https://github.com/ngx-translate/core/issues/783)) towards helping to improve the official Angular I18N library, as well as being part of the team that is developing a pretty awesome translation library (in my humble opinion) called [Transloco](https://github.com/ngneat/transloco).
 
-Having that in mind, I wanted to start building a new project that I envisioned needed at least to have
+A while ago I wanted to start building a new project that I envisioned needed at least to have
 
 - Server-side Rendering (SSR), to reduce first load times, important especially for people on mobile phones
 - I18N, which would also need to work when fetching that first page using SSR
 - Form Validation with translations using Transloco
 - Angular Material, because it just works and looks clean :)
 
-So let's build it!
+All this took me a bit more effort than expected, but in the end I got it working and now I am sharing it with you all. So let's get to it!
 
 #### TL;DR;
 
-This is a very large post :)
-
-If you just want a working example of these integrations, head over to the [git repository](https://github.com/martinreus/ssr-translate)
+This is a very large post :) If you are just interested in a working example of these integrations, head over to my [git repository](https://github.com/martinreus/ssr-translate)
 
 ## Initial setup
 
 ### Creating a new project
 
-While Angular 9 is still not yet released, we can use its RC version (currently at 9.0.0-rc.12). To do this more easily, I've installed @angular/cli@next (which installs the current RC version) to generate a new project called `ssr-translate`.
+While Angular 9 is still not yet released, we can use its RC version (currently at 9.0.0-rc.12), which is almost production ready. To do this more easily, I've installed @angular/cli@next (which installs the current RC version) to generate a new project called `ssr-translate`.
 
 ```bash
 # install @angular/cli
@@ -98,9 +96,9 @@ chunk    {0} main.js (main) 5.81 MiB [entry] [rendered]
 Node Express server listening on [http://localhost:4000](http://localhost:4000)
 ```
 
-## Add Transloco
+If you go to [http://localhost:4000](http://localhost:4000), you'll see that the page loads instantly.
 
-This was by far the part that took most time, but thankfully now that I am done with it you can reap the benefits =)
+## Configure Transloco
 
 First we'll add transloco by running
 
@@ -110,7 +108,7 @@ ng add @ngneat/transloco
 
 When asked, choose the languages you'll have on your website (comma separated) and also be sure to answer `yes` when asked if working with server side rendering.
 
-Transloco will add some translations inside `assets/i18n` folder. For a simple test, let's add a test translation. In my case, I configured Transloco to support _pt_ and _en_ languages. So I added some content in en.json
+Transloco will add some translations inside `assets/i18n` folder. For a simple test, we may add a test translation. In my case, I configured Transloco to support _pt_ and _en_ languages. So I added some content in en.json
 
 ```json
 {
@@ -144,7 +142,7 @@ Now if you run the app (without using SSR yet)
 ng serve
 ```
 
-and head over to [http://localhost:4200](http://localhost:4200), you will see that the message will always be presented in your preferred language, which will be the first you listed when configuring the available languages. If you open `transloco-root.module.ts` you will see that a default language is set there. What we actually want though is to choose it dinamically, depending on which language is set in the user's browser configuration.
+and head over to [http://localhost:4200](http://localhost:4200), you will see that the page will always be presented in the first language you listed when adding transloco's library. If you open `transloco-root.module.ts` you will see that a default language is set there. What we actually want though is to choose it dinamically, based on which language is set in the user's browser configuration.
 
 For that, we will need to get the browser's language configuration and use it to decide in which language to present the page. Since we are also going to do SSR, we will need to get the language from the request headers, since we don't have access to the user's browser configuration.
 
@@ -210,7 +208,7 @@ In `transloco-root.module.ts`, change `availableLangs` and `defaultLangs` values
 export class TranslocoRootModule {}
 ```
 
-Now in you `app.module.ts` file, add a provider configuration, which will provide our `LocaleConfig` using the `browserLocaleFactory` we defined in `locale-lang-config.ts`:
+Now in you `app.module.ts` file, add a provider configuration for `LocaleConfig` using the `browserLocaleFactory` we defined in `locale-lang-config.ts`:
 
 ```typescript
   [...]
@@ -239,22 +237,22 @@ If everything went according to plan, when opening the page at [http://localhost
 
 ##### Fetching Language from request headers (SSR part)
 
-Just as an experiment, let's try to run this using Server-side Rendering.
+Just as an experiment, let's try to run what we've built so far using Server-side Rendering.
 
 ```bash
 npm run build:ssr && npm run serve:ssr
 ```
 
-If we now head over to [http://localhost:4000](http://localhost:4000), we get an internal server error. Looking at the logs, we will see that we get
+If we go to [http://localhost:4000](http://localhost:4000), we will get an internal server error. Looking at the logs, we will see that we get the exception we defined in our browserLocaleFactory:
 
 ```cmd
 Node Express server listening on [http://localhost:4000](http://localhost:4000)
 ERROR Error: Fetching locale failed. Are you really in a browser??
 ```
 
-This happens because browserLocaleFactory is being used to provide the `LocaleConfig`. This won't work because we need to provide a serverLocalFactory for the SSR part. We will also need to change a bit the way we provide these factories.
+This happens because `browserLocaleFactory` is being used to provide the `LocaleConfig`. This won't work because we need to provide a `serverLocalFactory` that does not rely on a browser window for the SSR part. We will also need to change a bit the way we provide these browser and server factories.
 
-Let's add a new function called `serverLocalFactory` to our `locale-lang-config.ts` file:
+Let's add a new function called `serverLocaleFactory` to our `locale-lang-config.ts` file:
 
 ```typescript
 [...]
@@ -309,7 +307,7 @@ and substitute it by adding the `serverLocaleFactory` as a provider for `LocaleC
   [...]
 ```
 
-This still won't do the trick. When we try to access the website using SSR, we will now have 2 distinct providers for `LocaleConfig` since `AppModule` also already defines a provider for `LocaleConfig` - look at `AppServerModule`: it references `AppModule`.
+This still won't work, though. When we try to access the website using SSR, we will now have 2 distinct providers for `LocaleConfig` since `AppModule` also already defines a provider for `LocaleConfig` - look at `AppServerModule`: it references `AppModule`.
 
 So the last step is to separate client and server modules so that each declares a single locale factory. To do so, create an `app.client.module.ts` file under `src/app` with the following content:
 
@@ -435,7 +433,7 @@ For this to work, we need to add some imports to our `AppModule`,
   ]
 ```
 
-and we also create the translations for pt and en
+and we also need to create the translations for pt and en
 
 ```json
 {
@@ -463,7 +461,7 @@ and we also create the translations for pt and en
 }
 ```
 
-We must not forget to also initialize our FormGroup in app.component.ts:
+Initialize the FormGroup in app.component.ts:
 
 ```typescript
 export class AppComponent implements OnInit {
@@ -528,7 +526,7 @@ export class TranslateErrorPipe implements PipeTransform {
 }
 ```
 
-Our new pipe will take two arguments; the first argument takes all `ValidationErrors` a field will output when in error. If we look at the definition of Angular's ValidationError interface:
+Our new pipe will take two arguments; the first argument takes all `ValidationErrors` a field will output when in error. If we look at the definition of Angular's `ValidationErrors` interface:
 
 ```typescript
 export interface ValidationError {
@@ -536,7 +534,7 @@ export interface ValidationError {
 }
 ```
 
-We see that there might be multiple errors, represented as keys in this interface. The `any` type on the right side might contain an arbitrary object detailing the error. For instance, if we define a `Validators.maxLength(3)` for a field and the user inputs more than 3 chars, the field will have following error:
+we can see that each error is represented as a key in this interface. The `any` type on the value side might contain an arbitrary object detailing the error. For instance, if we define a `Validators.maxLength(3)` for a field and when the user inputs more than 3 chars, the field will output the following error:
 
 ```json
 {
@@ -565,7 +563,7 @@ Let's add some validations in app.component.ts then:
   }
 ```
 
-And in the template, display the error messages by adding a mat-error right under each input tag
+In the template, display the error messages by adding a mat-error right under each input tag
 {% assign errorPipe = '{{ errors | i18nErr: t }}' %}
 
 ```html
@@ -586,7 +584,7 @@ And in the template, display the error messages by adding a mat-error right unde
   [...]
 ```
 
-Lets add translations for `required`, `minlength` and `maxlength`, which are the keys of `ValidationErrors` we might get when we have these errors present in our form to pt.json and en.json.
+Add translations for `required`, `minlength` and `maxlength` to pt.json and en.json. These are the keys of `ValidationErrors` we might get when we have these errors present in our form:
 
 {% assign requiredLength = '{{ requiredLength }}' %}
 
@@ -604,7 +602,7 @@ Lets add translations for `required`, `minlength` and `maxlength`, which are the
   "maxlength": "Cannot have more than {{ requiredLength }} characters"
 ```
 
-In the translation files, you can see we are using string interpolation for the `requiredLength`, which is part of `ValidationError` details when we have a `minlength` or `maxlength` validation error.
+In the translation files, you can see we are using string interpolation for the `requiredLength`, which is part of `ValidationErrors` details when we have a `minlength` or `maxlength` validation error.
 
 And that's it, we are finally done with this huge tutorial!
 
@@ -612,8 +610,8 @@ And that's it, we are finally done with this huge tutorial!
 
 Hopefully this tutorial didn't melt your brain. Having translations and SSR configured properly right at the beginning of a new project is extremely beneficial down the road since having to change all this later can be very frustrating and time consuming!
 
-If you want to have a look at the fully working example, please check it out at [https://github.com/martinreus/ssr-translate](https://github.com/martinreus/ssr-translate).
+If you want to have a look at the fully working example, please check it out at [github.com/martinreus/ssr-translate](https://github.com/martinreus/ssr-translate).
 
-If you found an issue or typos in this tutorial, please kindly let me know by opening an issue here -> [https://github.com/martinreus/martinreus.github.io/issues](https://github.com/martinreus/martinreus.github.io/issues)
+If you found an issue or typos in this tutorial, please kindly let me know by opening [an issue here](https://github.com/martinreus/martinreus.github.io/issues)
 
 Thanks for reading and see you in the next one! Cheers!

@@ -245,7 +245,7 @@ Just as an experiment, let's try to run what we've built so far using Server-sid
 npm run build:ssr && npm run serve:ssr
 ```
 
-If we go to [http://localhost:4000](http://localhost:4000), we will get an internal server error. Looking at the logs, we will see that we get the exception we defined in our browserLocaleFactory:
+If we go to [http://localhost:4000](http://localhost:4000), we will get an internal server error. Looking at the logs, we will see that we get the exception we defined in our `browserLocaleFactory`:
 
 ```cmd
 Node Express server listening on http://localhost:4000

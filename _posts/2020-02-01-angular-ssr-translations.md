@@ -43,7 +43,7 @@ ng new ssr-translate
 cd ssr-translate
 ```
 
-Angular CLI will ask if you want to enable routing (to which I answered yes) and what kind of stylesheet you want to use (I chose SCSS).
+Angular CLI will ask if you want to enable routing (for which I answered yes) and what kind of stylesheet you want to use (I chose SCSS).
 
 ## Enable Server-side Rendering
 

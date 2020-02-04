@@ -10,16 +10,16 @@ featured: true
 hidden: true
 ---
 
-Angular 9 is almost out! With the new version, Ivy rendering engine will now be the default and we can also expect improved i18n and l10n. In order to translate your website in different languages using Angular's I18N though, you will have to compile your source code in every language your website is going to be presented to the user. You will then need to have every different version running behind a proxy, which will route your user to the correct version. This might not fit your development workflow and could also add some additional complexity when deploying your website. On top of that, changing the language in runtime is not yet possible, although Google is already working on it - [see the issue here](https://github.com/angular/angular/issues/16477).
-
-There are some very good alternatives to Angular's provided I18N library, like the ubiquous [ngx-translation](https://github.com/ngx-translate/core). However, the owner of this repository is shifting his efforts (see [here](https://github.com/ngx-translate/core/issues/783)) towards helping to improve the official Angular I18N library, as well as being part of the team that is developing a pretty awesome translation library (in my humble opinion) called [Transloco](https://github.com/ngneat/transloco).
-
 A while ago I wanted to start building a new project that I envisioned needed at least to have
 
 - Server-side Rendering (SSR), to reduce first load times, important especially for people on mobile phones
 - I18N, which would also need to work when fetching that first page using SSR
-- Form Validation with translations using Transloco
+- Form Validation with translations
 - Angular Material, because it just works and looks clean :)
+
+In order to translate a website in different languages using Angular's I18N though, you will have to compile your source code in every language your website is going to be presented to the user. You will then need to have every different version running behind a proxy, which will route your user to the correct version. This might not fit your development workflow and could also add some additional complexity when deploying your website. On top of that, changing the language in runtime is not **yet** possible, although Google is already working on it - [see the issue here](https://github.com/angular/angular/issues/16477).
+
+There are some very good alternatives to Angular's I18N. For example, there are a ton of tutorials about [ngx-translation](https://github.com/ngx-translate/core) out there. However, this lib has a lot of opened issues and the owner of this repository is shifting his efforts (see [here](https://github.com/ngx-translate/core/issues/783)) towards helping to improve the official Angular I18N library. He is also part of a small team that is developing a pretty awesome new translation library called [Transloco](https://github.com/ngneat/transloco), which we will use in this tutorial.
 
 All this took me a bit more effort than expected, but in the end I got it working and now I am sharing it with you all. So let's get to it!
 
@@ -29,9 +29,11 @@ This is a very large post :) If you are just interested in a working example of 
 
 ## Initial setup
 
+While Angular 9 is still not yet released, we can use its RC version (currently at 9.0.0-rc.12), which is almost production ready. Angular 9 will use the new Ivy renderer as default, which is faster and generates smaller _js_ compiled code.
+
 ### Creating a new project
 
-While Angular 9 is still not yet released, we can use its RC version (currently at 9.0.0-rc.12), which is almost production ready. To do this more easily, I've installed @angular/cli@next (which installs the current RC version) to generate a new project called `ssr-translate`.
+To do this more easily, I've installed @angular/cli@next (which installs the current RC version) to generate a new project called `ssr-translate`.
 
 ```bash
 # install @angular/cli

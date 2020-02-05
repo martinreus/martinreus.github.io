@@ -19,9 +19,9 @@ A while ago I wanted to start building a new project that I envisioned needed at
 
 In order to translate a website in different languages using Angular's I18N though, you will have to compile your source code in every language your website is going to be presented to the user. You will then need to have every different version running behind a proxy, which will route your user to the correct version. This might not fit your development workflow and could also add some additional complexity when deploying your website. On top of that, changing the language in runtime is not **yet** possible, although Google is already working on it - [see the issue here](https://github.com/angular/angular/issues/16477).
 
-There are some very good alternatives to Angular's I18N. For example, there are a ton of tutorials about [ngx-translation](https://github.com/ngx-translate/core) out there. However, this lib has a lot of opened issues and the owner of this repository is shifting his efforts (see [here](https://github.com/ngx-translate/core/issues/783)) towards helping to improve the official Angular I18N library. He is also part of a small team that is developing a pretty awesome new translation library called [Transloco](https://github.com/ngneat/transloco), which we will use in this tutorial.
+There are some very good alternatives to Angular's I18N. For example, there are a ton of tutorials about [ngx-translate](https://github.com/ngx-translate/core) out there. However, this lib has a lot of opened issues and the owner of this repository is shifting his efforts (see [here](https://github.com/ngx-translate/core/issues/783)) towards helping to improve the official [Angular I18N library](https://github.com/angular/angular/issues/16477). Fortunately for us, there is a new kid on the block called [Transloco](https://github.com/ngneat/transloco), which is being actively developed and is more powerful than the former. We'll be using this library for this tutorial.
 
-All this took me a bit more effort than expected, but in the end I got it working and now I am sharing it with you all. So let's get to it!
+All this took me a bit more effort than expected, but in the end I got it working and can share it with you all. So let's get to it!
 
 #### TL;DR;
 

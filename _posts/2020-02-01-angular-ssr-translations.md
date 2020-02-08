@@ -17,7 +17,7 @@ A while ago I wanted to start building a new project that I envisioned needed at
 - Form Validation with translations
 - Angular Material, because it just works and looks clean :)
 
-In order to translate a website in different languages using Angular's I18N though, you will have to compile your source code in every language your website is going to be presented to the user. You will then need to have every different version running behind a proxy, which will route your user to the correct version. This might not fit your development workflow and could also add some additional complexity when deploying your website. On top of that, changing the language in runtime is not **yet** possible, although Google is already working on it - [see the issue here](https://github.com/angular/angular/issues/16477).
+In order to translate a website in different languages using Angular's I18N though, you will have to compile your source code in every language your website is going to be presented to the user. You will then need to have every different version running behind a proxy, which will route your user to the site with the desired language. This might not fit your development workflow and could also add some additional complexity when deploying your website. On top of that, changing the language in runtime is not **yet** possible, although Google is already working on it - [see the issue here](https://github.com/angular/angular/issues/16477).
 
 There are some very good alternatives to Angular's I18N. For example, there are a ton of tutorials about [ngx-translate](https://github.com/ngx-translate/core) out there. However, this lib has a lot of opened issues and the owner of this repository is shifting his efforts (see [here](https://github.com/ngx-translate/core/issues/783)) towards helping to improve the official [Angular I18N library](https://github.com/angular/angular/issues/16477). Fortunately for us, there is a new kid on the block called [Transloco](https://github.com/ngneat/transloco), which is being actively developed and is more powerful than the former. We'll be using this library for this tutorial.
 
@@ -29,15 +29,15 @@ This is a very large post :) If you are just interested in a working example of 
 
 ## Initial setup
 
-While Angular 9 is still not yet released, we can use its RC version (currently at 9.0.0-rc.12), which is almost production ready. Angular 9 will use the new Ivy renderer as default, which is faster and generates smaller _js_ compiled code.
+Angular 9 is finally here! With it, the new Ivy renderer as default, which is faster and generates smaller _js_ compiled code. And also: [we can now use Typescript 3.7](https://github.com/angular/angular-cli/issues/16071), which allows us to use [Optional Chaining](https://www.typescriptlang.org/docs/handbook/release-notes/typescript-3-7.html#optional-chaining)!!! Awesome!!
 
 ### Creating a new project
 
-To do this more easily, I've installed @angular/cli@next (which installs the current RC version) to generate a new project called `ssr-translate`.
+First, install @angular/cli if you don't already have it (make sure it's up to date and using version 9) to generate a new project called `ssr-translate`.
 
 ```bash
 # install @angular/cli
-npm i -g @angular/cli@next
+npm i -g @angular/cli
 # generate project
 ng new ssr-translate
 cd ssr-translate
@@ -47,10 +47,10 @@ Angular CLI will ask if you want to enable routing (for which I answered yes) an
 
 ## Enable Server-side Rendering
 
-Enable server-side rendering by adding angular universal (be sure to install the @next version, otherwise you might run into errors)
+Enable server-side rendering by adding angular universal
 
 ```bash
-ng add @nguniversal/express-engine@next --clientProject ssr-translate
+ng add @nguniversal/express-engine --clientProject ssr-translate
 ```
 
 where ssr-translate is the name of the project you created. You should expect an output similar to
@@ -377,10 +377,10 @@ FINALLY! After much sweat and tears, and if everything went well, you can start 
 Add Angular material by running
 
 ```bash
-ng add @angular/material@next
+ng add @angular/material
 ```
 
-I've also used `next` version here, just to be consistent with versioning. Progress through all questions with your choices (I also chose to have global fonts enabled, since this applies roboto font to the whole page). If you don't want roboto applied to the body of your page, just stick with the defaults.
+Progress through all questions with your choices (I also chose to have global fonts enabled, since this applies roboto font to the whole page). If you don't want roboto applied to the body of your page, just stick with the defaults.
 
 Now let's add a new reactive form in our app.component.html, with some translated fields:
 

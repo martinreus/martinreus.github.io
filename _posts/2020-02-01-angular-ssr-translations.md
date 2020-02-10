@@ -3,7 +3,7 @@ title: Create an Angular app with translated field validations  using Transloco,
 date: 2020-02-01 15:35
 category: [Software Engineering, Angular]
 author: martin
-# tags: []
+tags: [ Angular, Translation, Angular I18N, Server-side Rendering, SEO, Crawlers, Transloco ]
 # summary:
 image: assets/images/posts/angular.svg
 featured: true

@@ -1,6 +1,6 @@
 ---
 layout: post
-title: Angular async validator on reactive forms with keystroke throttling and realtime password strength meter
+title: Angular async validator on reactive forms with keystroke throttling and real time password strength meter
 date: 2020-02-10 14:35
 category: [Software Engineering, Angular]
 author: martin
@@ -277,3 +277,4 @@ And that should do the trick! If you head over to [http://localhost:4200](http:/
 
 It can be very frustrating having to enter a lot of data into a form just to find out later on submit that something is missing or wrong.
 Asynchronous validations are great for giving real time feedback for users when they are typing something into a form that is going to be submitted. Hopefully this can help you implement a similar validation while also sparing your precious server resources to not be fully spammed by the user :)
+If you want to check the code for this tutorial, head over to [the Github repository](https://github.com/martinreus/async-throttled-validation).

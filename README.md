@@ -1,4 +1,4 @@
-# Martin Reus' Blog on technology
+# My ideas and findings, shared with you
 
 [Live Demo](https://martinreus.github.io/)
 

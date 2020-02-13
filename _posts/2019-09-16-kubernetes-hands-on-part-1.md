@@ -10,8 +10,6 @@ featured: true
 hidden: true
 ---
 
-I am a moderately frequent user of Docker Swarm. As so, I wanted to take a look at Kubernetes since it offers a bunch more additional features which are not present in Docker Swarm - Stateful Sets, for instance. So I started reading the official docs and got really overwhelmed by the amount of new concepts and features described there.
-
 In this series of articles I will try to summarize some of the functionalities Kubernetes offers. The official docs are really good though, so be sure to check them out [here](https://kubernetes.io/docs/concepts/overview/what-is-kubernetes/)! Where possible I will also try to bridge concepts between Docker and Kubernetes.
 
 Let's get started!

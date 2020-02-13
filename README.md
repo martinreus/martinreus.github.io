@@ -1,6 +1,6 @@
 # My ideas and findings, shared with you
 
-[Live Demo](https://martinreus.github.io/)
+[Take me to the site!!](https://martinreus.github.io/)
 
 ### Copyright
 

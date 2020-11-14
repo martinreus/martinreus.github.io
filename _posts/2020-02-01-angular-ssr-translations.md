@@ -108,7 +108,7 @@ First we'll add transloco by running
 ng add @ngneat/transloco
 ```
 
-When asked, choose the languages you'll have on your website (comma separated) and also be sure to answer `yes` when asked if working with server side rendering.
+When asked, choose the languages you'll have on your website (comma separated) and also be sure to answer `yes` when asked if working with server side rendering. You can anser all the questions the installation asks with their default values.
 
 Transloco will add some translations inside `assets/i18n` folder. For a simple test, we may add a test translation. In my case, I configured Transloco to support _pt_ and _en_ languages. So I added some content in en.json
 
@@ -136,7 +136,7 @@ Now erase whatever you find inside app.component.html and paste this snippet:
 </ng-container>
 ```
 
-You will find a more detailed explanation about how to use transloco in the [official documentation](https://netbasal.gitbook.io/transloco/translation-in-the-template/structural-directive).
+You will find a more detailed explanation about how to use transloco in the [official documentation](https://ngneat.github.io/transloco/docs/structural-directive/).
 
 Now if you run the app (without using SSR yet)
 
@@ -547,7 +547,7 @@ we can see that each error is represented as a key in this interface. The `any` 
 }
 ```
 
-The second pipe argument is Transloco's `translate` function (named `i18nFunc` in this pipe). This function accepts a translation key and an optional additional object used for interpolating the string we are translating; we can use the additional information we receive in the error object to complete our translation [with additional information](https://netbasal.gitbook.io/transloco/translation-in-the-template/structural-directive).
+The second pipe argument is Transloco's `translate` function (named `i18nFunc` in this pipe). This function accepts a translation key and an optional additional object used for interpolating the string we are translating; we can use the additional information we receive in the error object to complete our translation [with additional information](https://ngneat.github.io/transloco/docs/structural-directive/).
 
 Ultimately, what our pipe will do is to find the first error (if any) from the `ValidationErrors` argument and extract the first key and the value it finds for that key. The key will be passed as an argument to `i18nFunc` function, and if there is also a value object for the error key, it will be passed as the optional argument for the `i18nFunc` function
 

@@ -29,8 +29,6 @@ This is a very large post :) If you are just interested in a working example of 
 
 ## Initial setup
 
-Angular 9 is finally here! With it, the new Ivy renderer as default, which is faster and generates smaller _js_ compiled code. And also: [we can now use Typescript 3.7](https://github.com/angular/angular-cli/issues/16071), which allows us to use [Optional Chaining](https://www.typescriptlang.org/docs/handbook/release-notes/typescript-3-7.html#optional-chaining)!!! Awesome!!
-
 ### Creating a new project
 
 First, install @angular/cli if you don't already have it (make sure it's up to date and using version 9) to generate a new project called `ssr-translate`.
@@ -43,14 +41,14 @@ ng new ssr-translate
 cd ssr-translate
 ```
 
-Angular CLI will ask if you want to enable routing (for which I answered yes) and what kind of stylesheet you want to use (I chose SCSS).
+You can answer yes to all questions AngularCLI is going to ask.
 
 ## Enable Server-side Rendering
 
 Enable server-side rendering by adding angular universal
 
 ```bash
-ng add @nguniversal/express-engine --clientProject ssr-translate
+ng add @nguniversal/express-engine 
 ```
 
 where ssr-translate is the name of the project you created. You should expect an output similar to
@@ -264,7 +262,7 @@ export const serverLocaleFactory: (locale?: string) => () => LocaleConfig = (req
   }
 
   // try setting locale according to list of locales sent to us. Try finding the first one of the list - since
-  // this will probably the preferred client's language
+  // this will probably be the preferred client's language
   const localeFound: string | undefined = reqLocales
     .split(new RegExp(',|;'))
     .find(reqLocale => SUPPORTED_LANGUAGES.find(lang => reqLocale.includes(lang.language)));

@@ -51,7 +51,7 @@ Enable server-side rendering by adding angular universal
 ng add @nguniversal/express-engine 
 ```
 
-where ssr-translate is the name of the project you created. You should expect an output similar to
+You should expect an output similar to
 
 ```cmd
 Installing packages for tooling via npm.

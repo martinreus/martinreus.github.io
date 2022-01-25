@@ -68,7 +68,7 @@ UPDATE src/app/app-routing.module.ts (284 bytes)
 ✔ Packages installed successfully.
 ```
 
-I am not going into much detail here about what files are additionally created after adding SSR support, since the [official documentation](https://next.angular.io/guide/universal) already covers this in great detail, and I can only recommend you reading the details over there :).
+I am not going into much detail here about what files are additionally created after adding SSR support, since the [official documentation](https://angular.io/guide/universal) already covers this in great detail, and I can only recommend you reading the details over there :).
 
 By now you should be able to test that SSR works by building and serving your app
 
@@ -108,7 +108,7 @@ ng add @ngneat/transloco
 
 When asked, choose the languages you'll have on your website (comma separated) and also be sure to answer `yes` when asked if working with server side rendering. You can anser all the questions the installation asks with their default values.
 
-Transloco will add some translations inside `assets/i18n` folder. For a simple test, we may add a test translation. In my case, I configured Transloco to support _pt_ and _en_ languages. So I added some content in en.json
+Transloco will add some translations inside `src/assets/i18n` folder. For a simple test, we may add a test translation. In my case, I configured Transloco to support _pt_ and _en_ languages. So I added some content in en.json
 
 ```json
 {
@@ -250,7 +250,7 @@ Node Express server listening on http://localhost:4000
 ERROR Error: Fetching locale failed. Are you really in a browser??
 ```
 
-This happens because `browserLocaleFactory` is being used to provide the `LocaleConfig`. This won't work because we need to provide a `serverLocalFactory` that does not rely on a browser window for the SSR part. We will also need to change a bit the way we provide these browser and server factories.
+This happens because `browserLocaleFactory` is being used to provide the `LocaleConfig`. This won't work because we need to provide a `serverLocaleFactory` that does not rely on a browser window for the SSR part. We will also need to change a bit the way we provide these browser and server factories.
 
 Let's add a new function called `serverLocaleFactory` to our `locale-lang-config.ts` file:
 
@@ -334,11 +334,11 @@ Now in `src/main.ts`, instead of bootstrapping the `AppModule`, we will bootstra
 
 ```typescript
 [...]
-document.addEventListener('DOMContentLoaded', () => {
+function bootstrap() {
   platformBrowserDynamic()
     .bootstrapModule(AppClientModule)
-    .catch(err => console.error(err));
-});
+    .catch((err) => console.error(err));
+}
 ```
 
 We may now remove the `browserLocaleFactory` from our `AppModule`. It should look like this:

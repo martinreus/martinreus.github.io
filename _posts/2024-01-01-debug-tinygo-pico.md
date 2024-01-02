@@ -145,7 +145,7 @@ Open the project code in VSCode. You will notice that the `machine` import is br
 
 ![](/assets/images/posts/debug-tinypico/select-target.gif)
 
-Next, you will need to create two additional files in the `.vscode` folder. The first one will be instructing how to build your binary before it can be deployed on the board. Create a file named `tasks.json` with the following content:
+Next, you will need to create two additional files in the `.vscode` folder. The first one will be instructing how to build your binary before it can be deployed to the board. Create a file named `tasks.json` with the following content:
 
 ```json
 {

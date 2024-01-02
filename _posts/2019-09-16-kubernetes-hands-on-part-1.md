@@ -6,7 +6,7 @@ author: martin
 # tags: []
 # summary:
 image: assets/images/posts/kubernetes.png
-featured: true
+featured: false
 hidden: true
 ---
 

@@ -4,6 +4,7 @@ title: Kubernetes hands on - Part 2
 date: 2019-09-21 11:00
 category: [ DevOps ]
 author: martin
+image: assets/images/posts/kubernetes.png
 tags: [ DevOps, Kubernetes, Microservices ]
 ---
 

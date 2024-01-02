@@ -7,7 +7,7 @@ author: martin
 # summary:
 image: assets/images/posts/kubernetes.png
 featured: false
-hidden: true
+hidden: false
 ---
 
 In this series of articles I will try to summarize some of the functionalities Kubernetes offers. The official docs are really good though, so be sure to check them out [here](https://kubernetes.io/docs/concepts/overview/what-is-kubernetes/)! Where possible I will also try to bridge concepts between Docker and Kubernetes.

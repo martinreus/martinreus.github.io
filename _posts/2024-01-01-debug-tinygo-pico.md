@@ -15,6 +15,8 @@ Happy new year! Wow, almost exactly 3 years ago since I wrote something, this is
 
 Let's talk about how to use VSCode to debug Go code running on a raspberrypi pico microcontroller! 
 
+Code for this article can be found in [this git repo](https://github.com/martinreus/vscode-tinygo-pico-debug)
+
 [TLDR; just show me how to do it!](#software-needed)
 
 Around 2020 I started learning and also using [Go](https://go.dev/) professionally. I like how simple to code and understand it is, so one of the questions that popped up at the time was if it was possible to compile it to microcontrollers such as atmel or arm devices. [TinyGo](https://tinygo.org/) project addresses exactly the port to these microcontroller architectures, while still making it possible to use the garbage collected memory model. It uses LLVM instead of outputting C code and then compiling it to binaries, which in practice also creates even smaller code optimized for these processors.
